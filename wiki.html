@@ -1,0 +1,886 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Battleship Game Wiki</title>
+  <link href="https://fonts.googleapis.com/css2?family=Varela+Round&display=swap" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background: #f5f7fa;
+      color: #333;
+      line-height: 1.6;
+    }
+
+    /* Wiki Header */
+    .wiki-header {
+      background: linear-gradient(90deg, #2c3e50, #34495e);
+      color: white;
+      padding: 2rem 2rem 1rem;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    }
+
+    .wiki-header h1 {
+      font-size: 2.5rem;
+      font-weight: 800;
+      margin-bottom: 0.5rem;
+    }
+
+    .wiki-header p {
+      font-size: 1.1rem;
+      opacity: 0.9;
+    }
+
+    /* Wiki Container */
+    .wiki-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 2rem;
+      display: grid;
+      grid-template-columns: 280px 1fr;
+      gap: 2rem;
+    }
+
+    /* Wiki Sidebar */
+    .wiki-sidebar {
+      background: white;
+      border-radius: 8px;
+      padding: 1.5rem;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+      height: fit-content;
+      position: sticky;
+      top: 2rem;
+    }
+
+    .wiki-sidebar h3 {
+      color: #2c3e50;
+      margin-bottom: 1rem;
+      font-size: 1.1rem;
+      border-bottom: 2px solid #3498db;
+      padding-bottom: 0.5rem;
+    }
+
+    .wiki-nav ul {
+      list-style: none;
+    }
+
+    .wiki-nav li {
+      margin-bottom: 0.5rem;
+    }
+
+    .wiki-nav a {
+      color: #555;
+      text-decoration: none;
+      display: block;
+      padding: 0.5rem 0.75rem;
+      border-radius: 4px;
+      transition: all 0.2s;
+    }
+
+    .wiki-nav a:hover {
+      background: #f0f2ff;
+      color: #2c3e50;
+    }
+
+    .wiki-nav a.active {
+      background: #3498db;
+      color: white;
+    }
+
+    /* Wiki Content */
+    .wiki-content {
+      background: white;
+      border-radius: 8px;
+      padding: 2rem;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+
+    .wiki-content h2 {
+      color: #2c3e50;
+      margin-bottom: 1rem;
+      font-size: 1.8rem;
+      border-bottom: 2px solid #f0f2ff;
+      padding-bottom: 0.5rem;
+    }
+
+    .wiki-content h3 {
+      color: #3498db;
+      margin: 1.5rem 0 0.75rem;
+      font-size: 1.3rem;
+    }
+
+    .wiki-content h4 {
+      color: #2c3e50;
+      margin: 1rem 0 0.5rem;
+      font-size: 1.1rem;
+    }
+
+    .wiki-content p {
+      margin-bottom: 1rem;
+      color: #555;
+    }
+
+    .wiki-content ul {
+      margin-left: 1.5rem;
+      margin-bottom: 1rem;
+    }
+
+    .wiki-content li {
+      margin-bottom: 0.5rem;
+    }
+
+    .wiki-content ol {
+      margin-left: 1.5rem;
+      margin-bottom: 1rem;
+    }
+
+    /* Feature Cards */
+    .feature-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 1.5rem;
+      margin: 1.5rem 0;
+    }
+
+    .feature-card {
+      background: #f8f9ff;
+      border: 1px solid #e0e5ff;
+      border-radius: 8px;
+      padding: 1.5rem;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+
+    .feature-card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(52, 152, 219, 0.15);
+    }
+
+    .feature-card h4 {
+      color: #2c3e50;
+      margin-bottom: 0.75rem;
+      font-size: 1.1rem;
+    }
+
+    .feature-card p {
+      font-size: 0.9rem;
+      color: #666;
+      margin-bottom: 0;
+    }
+
+    /* Info Boxes */
+    .info-box {
+      background: #d1ecf1;
+      border: 1px solid #17a2b8;
+      border-left: 4px solid #17a2b8;
+      padding: 1rem;
+      border-radius: 4px;
+      margin: 1rem 0;
+    }
+
+    .info-box strong {
+      color: #0c5460;
+    }
+
+    .warning-box {
+      background: #fff3cd;
+      border: 1px solid #ffc107;
+      border-left: 4px solid #ffc107;
+      padding: 1rem;
+      border-radius: 4px;
+      margin: 1rem 0;
+    }
+
+    .warning-box strong {
+      color: #856404;
+    }
+
+    .success-box {
+      background: #d4edda;
+      border: 1px solid #28a745;
+      border-left: 4px solid #28a745;
+      padding: 1rem;
+      border-radius: 4px;
+      margin: 1rem 0;
+    }
+
+    .success-box strong {
+      color: #155724;
+    }
+
+    /* Code Blocks */
+    .code-block {
+      background: #2c3e50;
+      color: #e0e5ff;
+      padding: 1rem;
+      border-radius: 4px;
+      font-family: 'Courier New', monospace;
+      font-size: 0.9rem;
+      overflow-x: auto;
+      margin: 1rem 0;
+    }
+
+    /* Tables */
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 1rem 0;
+    }
+
+    th, td {
+      border: 1px solid #ddd;
+      padding: 0.75rem;
+      text-align: left;
+    }
+
+    th {
+      background: #2c3e50;
+      color: white;
+      font-weight: bold;
+    }
+
+    tr:nth-child(even) {
+      background: #f8f9fa;
+    }
+
+    /* Back to Game Link */
+    .back-link {
+      display: inline-block;
+      margin-top: 2rem;
+      padding: 0.5rem 1rem;
+      background: #2c3e50;
+      color: white;
+      text-decoration: none;
+      border-radius: 4px;
+      transition: background 0.2s;
+    }
+
+    .back-link:hover {
+      background: #34495e;
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      .wiki-container {
+        grid-template-columns: 1fr;
+        padding: 1rem;
+      }
+
+      .wiki-sidebar {
+        position: static;
+        margin-bottom: 1rem;
+      }
+
+      .wiki-header h1 {
+        font-size: 1.8rem;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <header class="wiki-header">
+    <h1>⚓ Battleship Game Wiki</h1>
+    <p>Comprehensive documentation for the Classic Naval Combat Game</p>
+  </header>
+
+  <div class="wiki-container">
+    <!-- Sidebar Navigation -->
+    <aside class="wiki-sidebar">
+      <h3>📑 Contents</h3>
+      <nav class="wiki-nav">
+        <ul>
+          <li><a href="#overview" class="active">Overview</a></li>
+          <li><a href="#how-to-play">How to Play</a></li>
+          <li><a href="#game-features">Game Features</a></li>
+          <li><a href="#ships">Ships & Equipment</a></li>
+          <li><a href="#technical-details">Technical Details</a></li>
+          <li><a href="#development">Development</a></li>
+          <li><a href="#debugging">Debugging Process</a></li>
+          <li><a href="#future-enhancements">Future Enhancements</a></li>
+        </ul>
+      </nav>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="wiki-content">
+      <section id="overview">
+        <h2>🚀 Project Overview</h2>
+        <p>The Battleship game is a classic naval combat game implemented as a modern web application using Vue.js. This single-page application provides an engaging single-player experience against an AI opponent, featuring traditional paper-and-pencil styling with responsive gameplay mechanics.</p>
+
+        <div class="info-box">
+          <strong>ℹ️ Version:</strong> MVP (Minimum Viable Product) - Fully functional core gameplay
+        </div>
+
+        <h3>🎯 Key Features</h3>
+        <div class="feature-grid">
+          <div class="feature-card">
+            <h4>🎮 Single Player vs AI</h4>
+            <p>Play against a computer opponent with random shot selection</p>
+          </div>
+          <div class="feature-card">
+            <h4>⚙️ Flexible Placement</h4>
+            <p>Choose between automatic or manual ship placement</p>
+          </div>
+          <div class="feature-card">
+            <h4>🎨 Classic Styling</h4>
+            <p>Traditional paper-and-pencil aesthetic with clean design</p>
+          </div>
+          <div class="feature-card">
+            <h4>📊 Game Statistics</h4>
+            <p>Track shots, hits, accuracy, and game performance</p>
+          </div>
+        </div>
+
+        <h3>🌐 Technology Stack</h3>
+        <ul>
+          <li><strong>Frontend Framework:</strong> Vue.js 3 (Composition API)</li>
+          <li><strong>Build Tool:</strong> Vite</li>
+          <li><strong>Language:</strong> JavaScript</li>
+          <li><strong>Styling:</strong> CSS with traditional design system</li>
+          <li><strong>Architecture:</strong> Component-based with modular game logic</li>
+        </ul>
+      </section>
+
+      <section id="how-to-play">
+        <h2>🎮 How to Play</h2>
+        <p>Battleship is a game of strategy and deduction where you try to sink all of your opponent's ships before they sink yours.</p>
+
+        <h3>📋 Game Setup</h3>
+        <ol>
+          <li><strong>Choose Placement Method:</strong> Select "Auto Placement" for instant ship placement or "Manual Placement" to place ships yourself</li>
+          <li><strong>Place Your Ships:</strong> If using manual placement, click on your grid to position each ship. Ships can be placed horizontally or vertically</li>
+          <li><strong>Start the Game:</strong> Once all 5 ships are placed, click "Start Game" to begin</li>
+        </ol>
+
+        <h3>⚔️ Gameplay</h3>
+        <ol>
+          <li><strong>Your Turn:</strong> Click on any cell in the "Enemy Fleet" grid to fire a shot</li>
+          <li><strong>Shot Results:</strong>
+            <ul>
+              <li><strong>× (Hit):</strong> You hit an enemy ship!</li>
+              <li><strong>○ (Miss):</strong> You fired at empty water</li>
+            </ul>
+          </li>
+          <li><strong>AI Turn:</strong> After your shot, the AI will automatically fire at your fleet</li>
+          <li><strong>Continue:</strong> Alternate turns until one player sinks all opponent ships</li>
+        </ol>
+
+        <h3>🏆 Winning the Game</h3>
+        <p>The game ends when all ships of one fleet have been sunk. The player who sinks all opponent ships first wins!</p>
+
+        <div class="success-box">
+          <strong>💡 Strategy Tips:</strong>
+          <ul>
+            <li>Try to hit different areas to locate ships</li>
+            <li>Once you hit a ship, target adjacent cells to sink it</li>
+            <li>Remember that ships can be placed horizontally or vertically</li>
+            <li>Pay attention to shot patterns to deduce ship positions</li>
+          </ul>
+        </div>
+      </section>
+
+      <section id="game-features">
+        <h2>✨ Game Features</h2>
+
+        <h3>🎯 Ship Placement Options</h3>
+        <div class="feature-grid">
+          <div class="feature-card">
+            <h4>Auto Placement</h4>
+            <p>Instantly places all 5 ships randomly on your grid</p>
+          </div>
+          <div class="feature-card">
+            <h4>Manual Placement</h4>
+            <p>Click-to-place with orientation control and validation</p>
+          </div>
+        </div>
+
+        <h3>🎨 Visual Interface</h3>
+        <ul>
+          <li><strong>Clear Grid Labels:</strong> A-J columns and 1-10 rows for easy coordinate reference</li>
+          <li><strong>Hit Markers:</strong> Red × symbols show successful hits</li>
+          <li><strong>Miss Markers:</strong> Circle ○ symbols show missed shots</li>
+          <li><strong>Ship Colors:</strong> Different colors for each ship type for easy identification</li>
+          <li><strong>Turn Indicators:</strong> Clear display of whose turn it is</li>
+        </ul>
+
+        <h3>📊 Game Statistics</h3>
+        <table>
+          <tr>
+            <th>Metric</th>
+            <th>Description</th>
+          </tr>
+          <tr>
+            <td>Shots Fired</td>
+            <td>Total number of shots taken by player</td>
+          </tr>
+          <tr>
+            <td>Hits</td>
+            <td>Number of successful hits on enemy ships</td>
+          </tr>
+          <tr>
+            <td>Accuracy</td>
+            <td>Percentage of shots that were hits</td>
+          </tr>
+          <tr>
+            <td>Ships Remaining</th>
+            <td>Number of unsunk ships for each player</td>
+          </tr>
+        </table>
+
+        <h3>🔄 Game Controls</h3>
+        <ul>
+          <li><strong>New Game:</strong> Reset and start a fresh game at any time</li>
+          <li><strong>Play Again:</strong> After game over, start a new game with one click</li>
+          <li><strong>Reset Placement:</strong> Clear ship placement and start over during setup</li>
+        </ul>
+      </section>
+
+      <section id="ships">
+        <h2>🚢 Ships & Equipment</h2>
+        <p>The game features 5 different ships, each with unique size and characteristics:</p>
+
+        <table>
+          <tr>
+            <th>Ship Name</th>
+            <th>Size (Cells)</th>
+            <th>Color</th>
+            <th>Description</th>
+          </tr>
+          <tr>
+            <td>Carrier</td>
+            <td>5</td>
+            <td>Red</td>
+            <td>Largest ship, takes 5 hits to sink</td>
+          </tr>
+          <tr>
+            <td>Battleship</td>
+            <td>4</td>
+            <td>Teal</td>
+            <td>Large warship, takes 4 hits to sink</td>
+          </tr>
+          <tr>
+            <td>Cruiser</td>
+            <td>3</td>
+            <td>Blue</td>
+            <td>Medium-sized ship, takes 3 hits to sink</td>
+          </tr>
+          <tr>
+            <td>Submarine</td>
+            <td>3</td>
+            <td>Green</td>
+            <td>Medium-sized ship, takes 3 hits to sink</td>
+          </tr>
+          <tr>
+            <td>Destroyer</td>
+            <td>2</td>
+            <td>Yellow</td>
+            <td>Smallest ship, takes 2 hits to sink</td>
+          </tr>
+        </table>
+
+        <h3>📐 Ship Placement Rules</h3>
+        <ul>
+          <li>Ships can be placed horizontally or vertically</li>
+          <li>Ships cannot overlap each other</li>
+          <li>Ships must be completely within the 10×10 grid</li>
+          <li>Ships cannot be placed diagonally</li>
+          <li>All 5 ships must be placed before starting the game</li>
+        </ul>
+
+        <div class="warning-box">
+          <strong>⚠️ Important:</strong> Once a ship is placed during manual placement, it cannot be moved unless you reset the entire placement.
+        </div>
+      </section>
+
+      <section id="technical-details">
+        <h2>🔧 Technical Details</h2>
+
+        <h3>🏗️ Architecture</h3>
+        <p>The Battleship game follows a component-based architecture with clear separation of concerns:</p>
+
+        <h4>Component Structure</h4>
+        <ul>
+          <li><strong>App.vue:</strong> Root component managing game state and logic</li>
+          <li><strong>GameBoard.vue:</strong> Reusable game grid component for both fleets</li>
+          <li><strong>PlacementControls.vue:</strong> Ship placement interface and controls</li>
+          <li><strong>Controls.vue:</strong> Gameplay controls and status display</li>
+        </ul>
+
+        <h4>Game Logic Modules</h4>
+        <ul>
+          <li><strong>gameLogic.js:</strong> Core game rules, ship placement, shot processing</li>
+          <li><strong>ai.js:</strong> AI opponent logic and shot generation</li>
+          <li><strong>ships.js:</strong> Ship configurations and constants</li>
+          <li><strong>utils.js:</strong> Helper functions and utilities</li>
+        </ul>
+
+        <h3>🎨 Design System</h3>
+        <div class="code-block">
+Color Palette:
+- Primary: #2c3e50 (Dark Blue)
+- Secondary: #34495e (Lighter Blue)
+- Accent: #3498db (Bright Blue)
+- Success: #27ae60 (Green)
+- Danger: #e74c3c (Red)
+- Background: #f5f5dc (Beige/Paper)
+- Grid Lines: #95a5a6 (Gray)
+        </div>
+
+        <h3>⚡ Performance</h3>
+        <ul>
+          <li>Fast loading with Vite's optimized build process</li>
+          <li>Efficient Vue reactivity for state updates</li>
+          <li>Minimal JavaScript overhead</li>
+          <li>Optimized DOM manipulation</li>
+          <li>No external dependencies beyond Vue.js</li>
+        </ul>
+
+        <h3>🔐 Security Considerations</h3>
+        <ul>
+          <li>Client-side only - no server communication required</li>
+          <li>No user data collection or storage</li>
+          <li>No external API calls</li>
+          <li>Safe for offline play</li>
+        </ul>
+
+        <h3>🌐 Browser Compatibility</h3>
+        <p>The game is designed to work on modern browsers including:</p>
+        <ul>
+          <li>Chrome (recommended)</li>
+          <li>Firefox</li>
+          <li>Safari</li>
+          <li>Edge</li>
+        </ul>
+      </section>
+
+      <section id="development">
+        <h2>💻 Development</h2>
+
+        <h3>📁 Project Structure</h3>
+        <div class="code-block">
+battleship-game/
+├── src/
+│   ├── components/
+│   │   ├── GameBoard.vue      # Game grid component
+│   │   ├── PlacementControls.vue  # Ship placement UI
+│   │   └── Controls.vue        # Game controls UI
+│   ├── game/
+│   │   ├── gameLogic.js        # Core game rules
+│   │   ├── ai.js               # AI opponent logic
+│   │   ├── ships.js            # Ship configurations
+│   │   └── utils.js            # Helper functions
+│   ├── styles/
+│   │   └── main.css            # Global styles
+│   ├── App.vue                 # Root component
+│   └── main.js                 # Application entry
+├── package.json                # Dependencies
+└── vite.config.js             # Build configuration
+        </div>
+
+        <h3>🛠️ Development Commands</h3>
+        <div class="code-block">
+# Install dependencies
+npm install
+
+# Start development server
+npm run dev
+
+# Build for production
+npm run build
+
+# Preview production build
+npm run preview
+        </div>
+
+        <h3>🧪 Testing</h3>
+        <p>The game has been thoroughly tested for:</p>
+        <ul>
+          <li>Core gameplay mechanics</li>
+          <li>Ship placement validation</li>
+          <li>AI turn management</li>
+          <li>Win/lose conditions</li>
+          <li>UI responsiveness</li>
+          <li>Browser compatibility</li>
+        </ul>
+
+        <h3>📝 Development Notes</h3>
+        <div class="info-box">
+          <strong>💡 Key Development Decisions:</strong>
+          <ul>
+            <li>Chose Vue.js for reactivity and component architecture</li>
+            <li>Used Vite for fast development and modern build tooling</li>
+            <li>Implemented traditional styling for classic game feel</li>
+            <li>Designed modular architecture for easy enhancement</li>
+            <li>Started with simple AI for future difficulty expansion</li>
+          </ul>
+        </div>
+      </section>
+
+      <section id="debugging">
+        <h2>🐛 Debugging Process</h2>
+        <p>During the development of the Battleship MVP, several bugs were encountered and resolved. This section documents the debugging process and solutions implemented.</p>
+
+        <h3>📋 Bug Summary</h3>
+        <table>
+          <tr>
+            <th>Bug #</th>
+            <th>Issue</th>
+            <th>Severity</th>
+            <th>Status</th>
+          </tr>
+          <tr>
+            <td>1</td>
+            <td>Start button not appearing after ship placement</td>
+            <td>High</td>
+            <td>✅ Resolved</td>
+          </tr>
+          <tr>
+            <td>2</td>
+            <td>Vue template error - SHIP_CONFIGS not defined</td>
+            <td>High</td>
+            <td>✅ Resolved</td>
+          </tr>
+          <tr>
+            <td>3</td>
+            <td>Manual placement controls error (undefined name)</td>
+            <td>High</td>
+            <td>✅ Resolved</td>
+          </tr>
+          <tr>
+            <td>4</td>
+            <td>Column label alignment issue</td>
+            <td>Medium</td>
+            <td>✅ Resolved</td>
+          </tr>
+          <tr>
+            <td>5</td>
+            <td>Player shots not appearing on enemy board</td>
+            <td>High</td>
+            <td>✅ Resolved</td>
+          </tr>
+          <tr>
+            <td>6</td>
+            <td>Layout shift after manual placement completion</td>
+            <td>Low</td>
+            <td>✅ Resolved</td>
+          </tr>
+        </table>
+
+        <h3>🔍 Detailed Bug Reports</h3>
+
+        <h4>Bug #1: Start Button Not Appearing</h4>
+        <p><strong>Issue:</strong> The "Start Game" button did not appear after completing ship placement in both auto and manual placement modes.</p>
+        <p><strong>Root Cause:</strong> The <code>PlacementControls</code> component was tracking ship placement locally in its own state (<code>placedShips</code> array), while the actual placement logic was managed in the parent <code>App.vue</code> component. The component's local state was never synchronized with the actual board state.</p>
+        <p><strong>Solution:</strong></p>
+        <ul>
+          <li>Made <code>shipsPlacedCount</code> a prop instead of local state</li>
+          <li>Updated <code>allShipsPlaced</code> to use the prop value from parent</li>
+          <li>Synchronized <code>currentShipIndex</code> between parent and child components</li>
+          <li>Added proper state management when switching between auto/manual placement</li>
+        </ul>
+        <p><strong>Files Modified:</strong> <code>src/components/PlacementControls.vue</code>, <code>src/App.vue</code></p>
+
+        <h4>Bug #2: Vue Template Error</h4>
+        <p><strong>Issue:</strong> Console error: <code>[Vue warn]: Property "SHIP_CONFIGS" was accessed during render but is not defined on instance.</code></p>
+        <p><strong>Root Cause:</strong> In <code>App.vue</code> line 15, the template used <code>SHIP_CONFIGS.length</code> directly, but <code>SHIP_CONFIGS</code> was only imported in the script section and not available in the template context.</p>
+        <p><strong>Solution:</strong> Changed the template to use the <code>totalShips</code> computed property instead of <code>SHIP_CONFIGS.length</code>.</p>
+        <p><strong>Files Modified:</strong> <code>src/App.vue</code></p>
+
+        <h4>Bug #3: Manual Placement Controls Error</h4>
+        <p><strong>Issue:</strong> Console error: <code>Uncaught (in promise) TypeError: Cannot read properties of undefined (reading 'name')</code> when all 5 ships were manually placed.</p>
+        <p><strong>Root Cause:</strong> When <code>currentShipIndex</code> became 5 (after placing all 5 ships), the template tried to access <code>SHIP_CONFIGS[5]</code> which doesn't exist (array only has indices 0-4).</p>
+        <p><strong>Solution:</strong></p>
+        <ul>
+          <li>Added condition to only show ship placement controls when <code>currentShipIndex < totalShips</code></li>
+          <li>Added "placement complete" message when all ships are placed</li>
+          <li>Prevented accessing out-of-bounds array indices</li>
+        </ul>
+        <p><strong>Files Modified:</strong> <code>src/components/PlacementControls.vue</code>, <code>src/App.vue</code></p>
+
+        <h4>Bug #4: Column Label Alignment</h4>
+        <p><strong>Issue:</strong> The column labels (A-J) across the "Your Fleet" 10×10 grid were misaligned with the overall grid columns.</p>
+        <p><strong>Root Cause:</strong> The column label cells had a height of 1.5rem while the grid cells had a height of 2.5rem, causing vertical misalignment.</p>
+        <p><strong>Solution:</strong></p>
+        <ul>
+          <li>Changed column label cell height from 1.5rem to 2.5rem to match grid cells</li>
+          <li>Changed corner cell height from 1.5rem to 2.5rem for consistency</li>
+          <li>Added proper margin-bottom to column labels container</li>
+        </ul>
+        <p><strong>Files Modified:</strong> <code>src/styles/main.css</code></p>
+
+        <h4>Bug #5: Player Shots Not Appearing</h4>
+        <p><strong>Issue:</strong> After the first successful shot, subsequent shots did not appear visually on the "Enemy Fleet" board.</p>
+        <p><strong>Root Cause:</strong> The game tracked missed shots for the AI's shots on the player's board (<code>aiMissedShots</code>) but did not track the player's missed shots on the enemy board. Additionally, <code>playerMissedShots</code> was created but never added to the Vue component's return statement.</p>
+        <p><strong>Solution:</strong></p>
+        <ul>
+          <li>Added <code>playerMissedShots</code> state variable to track player's missed shots</li>
+          <li>Updated shot processing to add misses to <code>playerMissedShots</code> set</li>
+          <li>Passed <code>playerMissedShots</code> to the enemy GameBoard component</li>
+          <li>Added <code>playerMissedShots</code> to the return statement in setup function</li>
+          <li>Updated reset function to clear missed shots on new game</li>
+        </ul>
+        <p><strong>Files Modified:</strong> <code>src/App.vue</code></p>
+
+        <h4>Bug #6: Layout Shift After Manual Placement</h4>
+        <p><strong>Issue:</strong> When the last ship was manually placed, the ship placement controls moved from horizontal layout to vertical layout.</p>
+        <p><strong>Root Cause:</strong> When the manual placement section was hidden and the "placement complete" message appeared, the flexbox layout caused the remaining content to reflow vertically.</p>
+        <p><strong>Solution:</strong></p>
+        <ul>
+          <li>Added <code>align-items: flex-start</code> to <code>.game-setup</code> container</li>
+          <li>Removed the redundant "placement complete" message section</li>
+          <li>Ensured consistent layout behavior regardless of placement state</li>
+        </ul>
+        <p><strong>Files Modified:</strong> <code>src/styles/main.css</code>, <code>src/components/PlacementControls.vue</code></p>
+
+        <h3>🛠️ Environment Setup Issues</h3>
+
+        <h4>Node.js Installation</h4>
+        <p><strong>Issue:</strong> Node.js commands not found after installation.</p>
+        <p><strong>Root Cause:</strong> VS Code was open during Node.js installation and didn't pick up the new PATH environment variable.</p>
+        <p><strong>Solution:</strong> Restarted VS Code to refresh environment variables.</p>
+
+        <h4>PowerShell Script Execution</h4>
+        <p><strong>Issue:</strong> npm commands blocked by PowerShell execution policy.</p>
+        <p><strong>Root Cause:</strong> Default PowerShell policy blocks script execution for security.</p>
+        <p><strong>Solution:</strong> Used <code>Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass</code> for the current session.</p>
+
+        <h4>Git Configuration</h4>
+        <p><strong>Issue:</strong> Git commit failed due to missing user identity.</p>
+        <p><strong>Root Cause:</strong> Git user.name and user.email were not configured.</p>
+        <p><strong>Solution:</strong> Configured Git user identity with <code>git config</code> commands.</p>
+
+        <h3>🧪 Testing Strategy</h3>
+        <p>The debugging process involved systematic testing:</p>
+        <ol>
+          <li><strong>Console Logging:</strong> Added extensive console.log statements to track state changes and function calls</li>
+          <li><strong>Component Props:</strong> Verified prop passing between parent and child components</li>
+          <li><strong>State Management:</strong> Checked reactive state updates and Vue reactivity</li>
+          <li><strong>Visual Testing:</strong> Manually tested each feature and user interaction</li>
+          <li><strong>Error Analysis:</strong> Analyzed Vue warnings and JavaScript errors in browser console</li>
+        </ol>
+
+        <h3>📝 Debugging Best Practices Applied</h3>
+        <ul>
+          <li><strong>Incremental Testing:</strong> Tested each fix individually before moving to the next issue</li>
+          <li><strong>Console Logging:</strong> Used strategic logging to identify where logic was failing</li>
+          <li><strong>Vue DevTools:</strong> Leveraged Vue's reactivity system for state inspection</li>
+          <li><strong>Component Isolation:</strong> Tested components in isolation when possible</li>
+          <li><strong>Code Review:</strong> Reviewed template syntax and component communication patterns</li>
+        </ul>
+
+        <div class="success-box">
+          <strong>✅ Debugging Outcome:</strong> All 6 bugs were successfully resolved through systematic debugging. The game now functions correctly with no console errors or warnings. The debugging process also improved the overall code quality and component architecture.
+        </div>
+      </section>
+
+      <section id="future-enhancements">
+        <h2>🚀 Future Enhancements</h2>
+        <p>The Battleship game is designed for continuous improvement. Here are planned enhancements for future versions:</p>
+
+        <h3>🎮 Gameplay Enhancements</h3>
+        <div class="feature-grid">
+          <div class="feature-card">
+            <h4>🤖 Advanced AI</h4>
+            <p>Hunt-and-target strategy and probability-based targeting</p>
+          </div>
+          <div class="feature-card">
+            <h4>🎯 Difficulty Levels</h4>
+            <p>Easy, Medium, Hard AI difficulty options</p>
+          </div>
+          <div class="feature-card">
+            <h4>📊 Game History</h4>
+            <p>Track win/loss records and statistics over time</p>
+          </div>
+          <div class="feature-card">
+            <h4>🏆 Achievements</h4>
+            <p>Unlock achievements for various accomplishments</p>
+          </div>
+        </div>
+
+        <h3>🎨 UI/UX Improvements</h3>
+        <ul>
+          <li><strong>Mobile Responsiveness:</strong> Optimized layout for smartphones and tablets</li>
+          <li><strong>Modern Theme:</strong> Option for polished, modern UI design</li>
+          <li><strong>Animations:</strong> Smooth transitions and visual effects</li>
+          <li><strong>Sound Effects:</strong> Audio feedback for hits, misses, and game events</li>
+          <li><strong>Dark Mode:</strong> Toggle between light and dark themes</li>
+        </ul>
+
+        <h3>🔧 Technical Enhancements</h3>
+        <ul>
+          <li><strong>Local Storage:</strong> Save game progress and statistics</li>
+          <li><strong>PWA Support:</strong> Progressive Web App for offline play</li>
+          <li><strong>Performance Optimization:</strong> Further optimizations for faster loading</li>
+          <li><strong>Accessibility:</strong> Enhanced keyboard navigation and screen reader support</li>
+        </ul>
+
+        <h3>🌐 Advanced Features</h3>
+        <ul>
+          <li><strong>Online Multiplayer:</strong> Play against friends online</li>
+          <li><strong>Custom Ships:</strong> Create custom ship configurations</li>
+          <li><strong>Different Grid Sizes:</strong> Option for larger or smaller battlefields</li>
+          <li><strong>Tournament Mode:</strong> Compete in tournaments</li>
+          <li><strong>Leaderboards:</strong> Global ranking system</li>
+        </ul>
+
+        <div class="success-box">
+          <strong>📈 Development Roadmap:</strong>
+          <ul>
+            <li><strong>Phase 1 (Current):</strong> MVP with core gameplay ✅</li>
+            <li><strong>Phase 2:</strong> Enhanced features and better game states</li>
+            <li><strong>Phase 3:</strong> Modern/polished UI with animations</li>
+            <li><strong>Phase 4:</strong> Multiple AI difficulty levels</li>
+            <li><strong>Phase 5:</strong> Advanced features and multiplayer</li>
+          </ul>
+        </div>
+      </section>
+
+      <a href="index.html" class="back-link">← Back to Game</a>
+    </main>
+  </div>
+
+  <script>
+    // Smooth scrolling for navigation links
+    document.querySelectorAll('.wiki-nav a').forEach(anchor => {
+      anchor.addEventListener('click', function(e) {
+        e.preventDefault();
+        const targetId = this.getAttribute('href').substring(1);
+        const targetElement = document.getElementById(targetId);
+
+        if (targetElement) {
+          targetElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
+
+          // Update active state
+          document.querySelectorAll('.wiki-nav a').forEach(a => a.classList.remove('active'));
+          this.classList.add('active');
+        }
+      });
+    });
+
+    // Update active nav item on scroll
+    window.addEventListener('scroll', () => {
+      const sections = document.querySelectorAll('section[id]');
+      const navLinks = document.querySelectorAll('.wiki-nav a');
+
+      let current = '';
+      sections.forEach(section => {
+        const sectionTop = section.offsetTop;
+        if (scrollY >= sectionTop - 100) {
+          current = section.getAttribute('id');
+        }
+      });
+
+      navLinks.forEach(link => {
+        link.classList.remove('active');
+        if (link.getAttribute('href').substring(1) === current) {
+          link.classList.add('active');
+        }
+      });
+    });
+  </script>
+
+</body>
+</html>

@@ -12,21 +12,21 @@
           title="Your Fleet"
           :board="playerBoard"
           :show-ships="true"
-          :is-interactive="placementMethod === 'manual' && currentShipIndex < totalShips && gamePhase === 'setup'"
+          :is-interactive="placementMethod === 'manual' && currentShipIndex !== null && gamePhase === 'setup'"
           @cell-click="handleManualPlacement"
         />
 
         <PlacementControls
           :is-placing="isPlacing"
-          :ships-placed-count="placedShips.length"
+          :placed-ships="placedShips"
           :current-ship-index="currentShipIndex"
           :placement-method="placementMethod"
           @placement-method-changed="setPlacementMethod"
+          @ship-selected="handleShipSelection"
           @orientation-changed="setOrientation"
           @placement-reset="resetPlacement"
           @auto-place="autoPlaceShips"
           @start-game="startGame"
-          @place-ship="handleManualPlacement"
         />
       </div>
 
@@ -165,14 +165,13 @@ export default {
 
     // Methods
     const setPlacementMethod = (method) => {
-      placementMethod.value = method;
-      // Reset placement state when switching methods
-      if (method === 'manual' && placedShips.value.length === 0) {
-        currentShipIndex.value = 0;
-      } else if (method === 'auto') {
-        // Reset current ship index when switching to auto
-        currentShipIndex.value = 0;
+      // Clear board when switching from auto to manual
+      if (placementMethod.value === 'auto' && method === 'manual' && placedShips.value.length > 0) {
+        playerBoard.value = createEmptyBoard();
+        placedShips.value = [];
+        currentShipIndex.value = null;
       }
+      placementMethod.value = method;
     };
 
     const setOrientation = (horizontal) => {
@@ -181,7 +180,6 @@ export default {
 
     const resetPlacement = () => {
       playerBoard.value = createEmptyBoard();
-      currentShipIndex.value = 0;
       placedShips.value = [];
       // Also reset AI board for consistency
       aiBoard.value = createEmptyBoard();
@@ -191,21 +189,28 @@ export default {
       isPlacing.value = true;
       setTimeout(() => {
         playerBoard.value = randomShipPlacement();
-        placedShips.value = [...SHIP_CONFIGS];
-        currentShipIndex.value = SHIP_CONFIGS.length;
+        placedShips.value = [0, 1, 2, 3, 4]; // Store indices instead of ship objects
         isPlacing.value = false;
       }, 500);
     };
 
+    const handleShipSelection = (index) => {
+      currentShipIndex.value = index;
+    };
+
     const handleManualPlacement = ({ row, col }) => {
       if (placementMethod.value !== 'manual') return;
-      if (currentShipIndex.value >= SHIP_CONFIGS.length) return;
+      if (currentShipIndex.value === null) return;
+      if (placedShips.value.includes(currentShipIndex.value)) return;
 
       const ship = SHIP_CONFIGS[currentShipIndex.value];
       if (isValidPlacement(playerBoard.value, ship, row, col, isHorizontal.value)) {
         playerBoard.value = placeShip(playerBoard.value, ship, row, col, isHorizontal.value);
-        placedShips.value.push(ship);
-        currentShipIndex.value++;
+        placedShips.value.push(currentShipIndex.value); // Store index instead of ship object
+        
+        // Auto-select the next unplaced ship
+        const nextUnplaced = SHIP_CONFIGS.findIndex((_, index) => !placedShips.value.includes(index));
+        currentShipIndex.value = nextUnplaced !== -1 ? nextUnplaced : null;
       }
     };
 
@@ -275,7 +280,7 @@ export default {
       gamePhase.value = 'setup';
       playerBoard.value = createEmptyBoard();
       aiBoard.value = createEmptyBoard();
-      currentShipIndex.value = 0;
+      currentShipIndex.value = null;
       placedShips.value = [];
       aiMissedShots.value.clear();
       playerMissedShots.value.clear();
@@ -308,6 +313,7 @@ export default {
       setOrientation,
       resetPlacement,
       autoPlaceShips,
+      handleShipSelection,
       handleManualPlacement,
       startGame,
       handlePlayerShot,

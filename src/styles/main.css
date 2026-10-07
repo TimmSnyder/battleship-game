@@ -1,31 +1,35 @@
 /* Traditional/Classic Battleship Styling */
 
 :root {
-  --primary-color: #2c3e50;
-  --secondary-color: #34495e;
-  --accent-color: #3498db;
-  --success-color: #27ae60;
-  --danger-color: #e74c3c;
-  --warning-color: #f39c12;
-  --light-color: #ecf0f1;
-  --dark-color: #2c3e50;
-  --border-color: #95a5a6;
-  --grid-line-color: #bdc3c7;
-  --cell-bg: #ffffff;
-  --cell-hover: #ecf0f1;
-  --water-color: #aed9e0;
-}
-
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
+  --primary-color: #6366f1;
+  --primary-dark: #4f46e5;
+  --secondary-color: #8b5cf6;
+  --accent-color: #06b6d4;
+  --success-color: #10b981;
+  --danger-color: #ef4444;
+  --warning-color: #f59e0b;
+  --bg-primary: #0f172a;
+  --bg-secondary: #1e293b;
+  --bg-tertiary: #334155;
+  --text-primary: #f8fafc;
+  --text-secondary: #cbd5e1;
+  --text-muted: #94a3b8;
+  --border-color: #475569;
+  --card-bg: #1e293b;
+  --cell-bg: #334155;
+  --cell-hover: #475569;
+  --cell-active: #6366f1;
+  --water-color: #0ea5e9;
+  --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+  --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1);
+  --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1);
+  --shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.1);
 }
 
 body {
-  font-family: 'Courier New', Courier, monospace;
-  background: #f5f5dc; /* Beige/paper color */
-  color: #2c3e50;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  background: var(--bg-primary);
+  color: var(--text-primary);
   line-height: 1.6;
 }
 
@@ -37,23 +41,25 @@ body {
 
 /* Header */
 header {
-  background: #2c3e50;
-  color: #ecf0f1;
-  padding: 1.5rem;
+  background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+  color: white;
+  padding: 2rem;
   text-align: center;
-  border-bottom: 3px solid #34495e;
+  box-shadow: var(--shadow-lg);
+  margin-bottom: 2rem;
 }
 
 header h1 {
-  font-size: 2rem;
+  font-size: 2.5rem;
   margin-bottom: 0.5rem;
-  text-transform: uppercase;
-  letter-spacing: 2px;
+  font-weight: 700;
+  letter-spacing: -0.5px;
 }
 
 header p {
-  font-size: 1rem;
-  opacity: 0.8;
+  font-size: 1.1rem;
+  opacity: 0.9;
+  font-weight: 400;
 }
 
 /* Main Content */
@@ -69,10 +75,10 @@ main {
 .game-board {
   margin: 1rem;
   padding: 1.5rem;
-  border: 3px solid #2c3e50;
-  border-radius: 0;
-  background: #fff;
-  box-shadow: 2px 2px 0 #95a5a6;
+  border: 1px solid var(--border-color);
+  border-radius: 16px;
+  background: #e0f2fe;
+  box-shadow: var(--shadow-xl);
 }
 
 .board-title {
@@ -86,6 +92,7 @@ main {
   padding-bottom: 0.5rem;
 }
 
+/* Grid */
 .grid-container {
   display: flex;
   flex-direction: column;
@@ -94,26 +101,27 @@ main {
 
 .column-labels {
   display: flex;
-  margin-left: 2rem;
+  margin-left: 0;
   margin-bottom: 0;
 }
 
 .corner-cell {
-  width: 2rem;
-  height: 2.5rem;
+  width: 3.5rem;
+  height: 3.5rem;
 }
 
 .label-cell {
-  width: 2.5rem;
-  height: 2.5rem;
+  width: 3.5rem;
+  height: 3.5rem;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-weight: bold;
-  color: #2c3e50;
-  border-bottom: 2px solid #95a5a6;
-  border-right: 2px solid #95a5a6;
-  font-family: 'Courier New', Courier, monospace;
+  font-weight: 600;
+  color: var(--text-primary);
+  border: 1px solid var(--border-color);
+  background: var(--bg-tertiary);
+  border-radius: 8px;
+  box-sizing: border-box;
 }
 
 .grid-rows {
@@ -127,30 +135,33 @@ main {
 }
 
 .row-label {
-  width: 2rem;
-  height: 2.5rem;
+  width: 3.5rem;
+  height: 3.5rem;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-weight: bold;
-  color: #2c3e50;
-  border-right: 2px solid #95a5a6;
-  border-bottom: 2px solid #95a5a6;
-  font-family: 'Courier New', Courier, monospace;
+  font-weight: 600;
+  color: var(--text-primary);
+  border-right: 1px solid var(--border-color);
+  border-bottom: 1px solid var(--border-color);
+  background: var(--bg-tertiary);
+  border-radius: 8px;
   margin-right: 0;
+  box-sizing: border-box;
 }
 
 .cell {
-  width: 2.5rem;
-  height: 2.5rem;
-  border: 1px solid #95a5a6;
+  width: 3.5rem;
+  height: 3.5rem;
+  border: 1px solid var(--border-color);
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: default;
   position: relative;
-  background: #fff;
-  font-family: 'Courier New', Courier, monospace;
+  background: var(--cell-bg);
+  border-radius: 8px;
+  box-sizing: border-box;
 }
 
 .cell.interactive {
@@ -195,11 +206,11 @@ main {
 .controls,
 .placement-controls {
   padding: 1.5rem;
-  border: 3px solid #2c3e50;
-  border-radius: 0;
-  background: #fff;
+  border: 1px solid var(--border-color);
+  border-radius: 16px;
+  background: #e0f2fe;
   margin: 1rem;
-  box-shadow: 2px 2px 0 #95a5a6;
+  box-shadow: var(--shadow-xl);
 }
 
 .controls h3,
@@ -213,8 +224,15 @@ main {
   padding-bottom: 0.5rem;
 }
 
-.game-info {
-  margin-bottom: 1rem;
+.message {
+  text-align: center;
+  padding: 1rem;
+  margin: 1rem 0;
+  background: #ecf0f1;
+  border: 2px solid #95a5a6;
+  font-weight: bold;
+  color: #2c3e50;
+  font-family: 'Courier New', Courier, monospace;
 }
 
 .info-item {
@@ -237,18 +255,6 @@ main {
   color: #34495e;
 }
 
-.message {
-  text-align: center;
-  padding: 1rem;
-  margin: 1rem 0;
-  background: #ecf0f1;
-  border: 2px solid #95a5a6;
-  font-weight: bold;
-  color: #2c3e50;
-  font-family: 'Courier New', Courier, monospace;
-}
-
-/* Buttons */
 button {
   padding: 0.75rem 1.5rem;
   border: 2px solid #2c3e50;
@@ -291,22 +297,20 @@ button:disabled {
   color: #fff;
 }
 
-.start-btn,
-.play-again-btn {
-  display: block;
-  margin: 1rem auto 0;
-  padding: 0.75rem 2rem;
-  border: 2px solid #27ae60;
-  background: #27ae60;
-  color: #fff;
-  font-size: 1rem;
-  font-weight: bold;
+/* Game Setup */
+.game-setup {
+  display: flex;
+  flex-wrap: nowrap;
+  justify-content: center;
+  gap: 2rem;
+  align-items: flex-start;
 }
 
-.start-btn:hover,
-.play-again-btn:hover {
-  background: #219150;
-  border-color: #219150;
+.boards-container {
+  display: flex;
+  flex-wrap: nowrap;
+  justify-content: center;
+  gap: 2rem;
 }
 
 /* Game Over */
@@ -329,7 +333,7 @@ button:disabled {
 .final-stats {
   display: flex;
   justify-content: center;
-  gap: 2rem;
+  gap: 3rem;
   margin-bottom: 2rem;
 }
 
@@ -353,46 +357,25 @@ button:disabled {
   color: #2c3e50;
 }
 
-/* Layout */
-.game-setup {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 2rem;
-  align-items: flex-start;
+.start-btn,
+.play-again-btn {
+  display: block;
+  margin: 1rem auto 0;
+  padding: 0.75rem 2rem;
+  border: 2px solid #27ae60;
+  background: #27ae60;
+  color: #fff;
+  font-size: 1rem;
+  font-weight: bold;
 }
 
-.game-playing {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 2rem;
-}
-
-.boards-container {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 2rem;
+.start-btn:hover,
+.play-again-btn:hover {
+  background: #219150;
+  border-color: #219150;
 }
 
 /* Placement Controls */
-.placement-method {
-  display: flex;
-  gap: 1rem;
-  justify-content: center;
-  margin-bottom: 1rem;
-}
-
-.manual-placement {
-  margin-top: 1rem;
-}
-
-.current-ship {
-  text-align: center;
-  margin-bottom: 1rem;
-}
-
 .current-ship h4 {
   margin-bottom: 0.5rem;
   color: #2c3e50;
@@ -408,29 +391,10 @@ button:disabled {
   border-radius: 0;
 }
 
-.placement-controls-buttons {
-  display: flex;
-  gap: 0.5rem;
-  justify-content: center;
-  margin-bottom: 1rem;
-}
-
 .placement-info {
   text-align: center;
   color: #34495e;
   font-size: 0.9rem;
-}
-
-.auto-placement {
-  text-align: center;
-  margin-top: 1rem;
-}
-
-
-
-.auto-btn {
-  padding: 0.75rem 1.5rem;
-  font-size: 1rem;
 }
 
 .control-buttons {

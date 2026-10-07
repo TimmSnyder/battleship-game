@@ -299,6 +299,7 @@
           <li><a href="#technical-details">Technical Details</a></li>
           <li><a href="#development">Development</a></li>
           <li><a href="#debugging">Debugging Process</a></li>
+          <li><a href="#ui-enhancements">UI Enhancements</a></li>
           <li><a href="#future-enhancements">Future Enhancements</a></li>
         </ul>
       </nav>
@@ -773,6 +774,171 @@ npm run preview
 
         <div class="success-box">
           <strong>✅ Debugging Outcome:</strong> All 6 bugs were successfully resolved through systematic debugging. The game now functions correctly with no console errors or warnings. The debugging process also improved the overall code quality and component architecture.
+        </div>
+      </section>
+
+      <section id="ui-enhancements">
+        <h2>🎨 UI Enhancements</h2>
+        <p>After completing the MVP, significant UI and UX enhancements were implemented to improve the user experience and visual appeal of the game.</p>
+
+        <h3>🎯 Enhancement Goals</h3>
+        <ul>
+          <li>Modernize the visual design from traditional paper-and-pencil to modern dark theme</li>
+          <li>Improve ship placement interface with better visual feedback</li>
+          <li>Enhance layout for better screen space utilization</li>
+          <li>Add polish and professional finish to the interface</li>
+        </ul>
+
+        <h3>🎨 Design System Changes</h3>
+        <h4>Color Palette Update</h4>
+        <table>
+          <tr>
+            <th>Element</th>
+            <th>Original (Traditional)</th>
+            <th>Enhanced (Modern)</th>
+          </tr>
+          <tr>
+            <td>Background</td>
+            <td>Beige (#f5f5dc)</td>
+            <td>Dark Navy (#0f172a)</td>
+          </tr>
+          <tr>
+            <td>Game Board Background</td>
+            <td>White (#fff)</td>
+            <td>Pale Blue (#e0f2fe)</td>
+          </tr>
+          <tr>
+            <td>Header</td>
+            <td>Dark Blue (#2c3e50)</td>
+            <td>Purple/Indigo Gradient</td>
+          </tr>
+          <tr>
+            <td>Grid Cells</td>
+            <td>White (#fff)</td>
+            <td>Dark Gray (#334155)</td>
+          </tr>
+          <tr>
+            <td>Grid Size</td>
+            <td>2.5rem</td>
+            <td>3.5rem (40% larger)</td>
+          </tr>
+        </table>
+
+        <h4>Typography</h4>
+        <ul>
+          <li>Changed from Courier New (monospace) to Inter (sans-serif)</li>
+          <li>Added Google Fonts integration for modern typography</li>
+          <li>Consistent font weights across all components</li>
+        </ul>
+
+        <h3>🔧 Layout Improvements</h3>
+        <ul>
+          <li><strong>Placement Controls Position:</strong> Moved from below grid to right of grid for better visibility</li>
+          <li><strong>Game Boards:</strong> Configured to display side-by-side during gameplay</li>
+          <li><strong>Grid Size:</strong> Increased from 2.5rem to 3.5rem cells for better visibility</li>
+          <li><strong>Alignment:</strong> Fixed column label alignment to match grid columns</li>
+        </ul>
+
+        <h3>✨ Enhanced Placement Interface</h3>
+        <h4>Ship Status Panel</h4>
+        <ul>
+          <li>Progress bar showing placement completion percentage</li>
+          <li>"X / 5 Ships Placed" counter</li>
+          <li>Visual feedback on placement progress</li>
+        </ul>
+
+        <h4>Flexible Ship Selection</h4>
+        <ul>
+          <li>Users can select any ship to place in any order (no longer sequential)</li>
+          <li>Click ship tiles to select which ship to place</li>
+          <li>Visual indicators: ✓ (placed), ⟳ (current), ○ (pending)</li>
+          <li>Current ship pulses with purple highlight for attention</li>
+          <li>Placed ships show green border</li>
+        </ul>
+
+        <h4>Enhanced Controls</h4>
+        <ul>
+          <li>Removed emojis from buttons for cleaner appearance</li>
+          <li>Added keyboard shortcut: Press R to rotate ship orientation</li>
+          <li>Visual ship preview showing current ship size and color</li>
+          <li>Orientation toggle with gradient styling</li>
+          <li>Reset button for clearing placement</li>
+        </ul>
+
+        <h4>Finish Placement Flow</h4>
+        <ul>
+          <li>After placing all ships, "Finish Placement" button appears</li>
+          <li>"Reset Board" button allows clearing even after all ships placed</li>
+          <li>"Start Game" button only appears after finishing placement</li>
+          <li>Auto-selection of next unplaced ship after placement</li>
+        </ul>
+
+        <h3>🐛 UI Enhancement Debugging</h3>
+        <h4>Issue #1: CSS Reversion</h4>
+        <p><strong>Problem:</strong> Modern dark theme CSS was accidentally reverted to traditional styling, causing confusion about which version was active.</p>
+        <p><strong>Root Cause:</strong> File edits were not persisted correctly during modern theme implementation.</p>
+        <p><strong>Solution:</strong> Re-applied modern dark theme CSS with proper color variables and modern styling.</p>
+
+        <h4>Issue #2: Grid Alignment Problems</h4>
+        <p><strong>Problem:</strong> Column labels (A-J) were misaligned with grid columns. Multiple attempts to fix with different margin/padding values.</p>
+        <p><strong>Root Cause:</strong> Inconsistent use of box-sizing, margins, and container widths between label cells and grid cells.</p>
+        <p><strong>Solution:</strong> Fixed by ensuring consistent box-sizing: border-box, matching dimensions (3.5rem), and proper container width calculations.</p>
+
+        <h4>Issue #3: Font Inconsistency</h4>
+        <p><strong>Problem:</strong> Different fonts across components (Courier New vs Inter) causing visual inconsistency.</p>
+p><strong>Root Cause:</strong> Traditional styling used Courier New; modern theme used Inter but not applied to all elements.</p>
+        <p><strong>Solution:</strong> Added Inter font family to all buttons, labels, and text elements in PlacementControls component.</p>
+
+        <h4>Issue #4: Ship Selection Bug</h4>
+        <p><strong>Problem:</strong> When selecting a ship in manual placement, the wrong ship was being placed on the board (e.g., selected Cruiser but Carrier was placed).</p>
+        <p><strong>Root Cause:</strong> Duplicate state management with both `selectedShipIndex` (local) and `currentShipIndex` (parent prop) causing synchronization issues.</p>
+        <p><strong>Solution:</strong> Removed duplicate state, used single source of truth (currentShipIndex prop), and ensured proper event emission for ship selection.</p>
+
+        <h4>Issue #5: Manual Placement Button Not Working</h4>
+        <p><strong>Problem:</strong> Manual Placement button appeared to not work when clicked.</p>
+        <p><strong>Root Cause:</strong> Missing method (`handleShipSelection`) in the return statement of App.vue component setup function.</p>
+        <p><strong>Solution:</strong> Added `handleShipSelection` to the return statement to make it available to the template.</p>
+
+        <h4>Issue #6: Font Size Inconsistency</h4>
+        <p><strong>Problem:</strong> New buttons (Finish Placement, Start Game, Reset Board) had larger fonts than existing buttons.</p>
+p><strong>Root Cause:</strong> Initial styling used larger font size (1.1rem, font-weight 700) instead of matching existing button styles.</p>
+        <p><strong>Solution:</strong> Changed to match "Auto Place All Ships" button: font-size 1rem, font-weight 600.</p>
+
+        <h3>📊 Enhancement Statistics</h3>
+        <table>
+          <tr>
+            <th>Metric</th>
+            <th>Value</th>
+          </tr>
+          <tr>
+            <td>UI Iterations</td>
+            <td>15+ small adjustments to fonts, colors, spacing, alignment</td>
+          </tr>
+          <tr>
+            <td>New Components</td>
+            <td>Ship status panel, progress bar, enhanced ship tiles</td>
+          </tr>
+          <tr>
+            <td>New Features</td>
+            <td>Flexible ship selection, finish placement flow, keyboard shortcuts</td>
+          </tr>
+          <tr>
+            <td>Bugs Fixed During Enhancement</td>
+            <td>6 issues resolved</td>
+          </tr>
+        </table>
+
+        <h3>💡 Lessons Learned</h3>
+        <ul>
+          <li><strong>Value of Design Tools:</strong> Figma or similar tools could have reduced UI iteration time by 30-40% by allowing visual exploration before coding</li>
+          <li><strong>Importance of Consistent State Management:</strong> Duplicate state causes synchronization bugs; single source of truth is critical</li>
+          <li><strong>CSS Box-Sizing Complexity:</strong> Border-box vs content-box calculations require careful attention for alignment</li>
+          <li><strong>Iterative vs. Batch Approaches:</strong> Small iterative changes produce precise results but take more time; batch changes are faster but require more upfront planning</li>
+          <li><strong>User Feedback Value:</strong> Clear, specific feedback accelerates debugging and produces better results</li>
+        </ul>
+
+        <div class="success-box">
+          <strong>✅ Enhancement Outcome:</strong> The UI enhancements transformed the game from a traditional paper-and-pencil aesthetic to a modern, polished interface with significantly improved user experience. The flexible ship selection feature provides better control over gameplay, and the visual polish gives the game a professional appearance suitable for production use.
         </div>
       </section>
 
